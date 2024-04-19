@@ -30,6 +30,7 @@ export default {
                 )
                     .then(res => {
                         this.doors = res.data;
+                        console.log(this.doors);
                         //Обшая цена
                         this.doors.forEach(element => {
                             this.doorMobileValue.totalPrice += element.price_comp * element.quantity;

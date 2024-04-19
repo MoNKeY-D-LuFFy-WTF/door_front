@@ -54,6 +54,9 @@
                             <img :src="`${BACKEND_URL}/images_catalog/${door.door_statuse.catalog_img_id}?title=${door.door_statuse.name}`"
                                 alt="">
                         </div>
+                        <div v-if="doorMobileValue.isCombo" class="header-basket-combo alert alert-info">
+                            Активировано специальное предложение
+                        </div>
                     </div>
                 </div>
                 <div class="door__main">
@@ -61,16 +64,16 @@
                         <h6>Материал покрытия</h6>
                         <ul>
                             <li @click="changeMaterialDoor(material)"
-                                :class="doorMobileValue.material.door_material_id == material.material.id ? 'active' : ''"
-                                v-for="material in door.door_materials ">
-                                {{ material.material.name }}
+                                :class="doorMobileValue.material.id == material.id ? 'active' : ''"
+                                v-for="material in door.combo.materials">
+                                {{ material.name }}
                             </li>
+                            <!-- :class="doorMobileValue.material.id == material.id ? 'active' : ''" -->
                         </ul>
                     </div>
                     <div class="door__main-colors">
                         <h6>Цвет</h6>
                         <ul class="main-colors__colors">
-                            <!-- {{ door.door_color.id }} -->
                             <li @click="changeDoorColor(color)" v-for="color in doorMobileValue.colors">
                                 <img :class="color.id == door.door_color.id ? 'active' : ''"
                                     :src="`${BACKEND_URL}/door_colors/${color.image}/image`" alt="">
@@ -105,14 +108,19 @@
                     <div class="door__footer-open">
                         <h6>Система открывания</h6>
                         <select @change="changeSelects('open', $event)" class="form-select" name="" id="">
-                            <option v-for="open in door.door_open_system" :value="open.open_system.id">{{
-                                open.open_system.name }}</option>
+                            <option v-for="open in door.door_open_system"
+                                :selected="open.open_system.id === door.combo.open.id" :value="open.open_system.id">
+                                {{ open.open_system.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="door__footer-thick">
                         <h6>Толщина стены</h6>
                         <select @change="changeSelects('thick', $event)" class="form-select" name="" id="">
-                            <option v-for="thick in door.door_thick" :value="thick.thick.id">{{ thick.thick.name }}
+                            <option v-for="thick in door.door_thick" :selected="thick.thick.id === door.combo.thick.id"
+                                :value="thick.thick.id">
+                                {{
+                                    thick.thick.name }}
                             </option>
                         </select>
                     </div>
@@ -208,6 +216,7 @@ button {
 .door__header-price {
     border-right: solid 1px #ccc;
     padding: 0px 20px 0px 0px;
+    flex: 1 1 33.333%;
 }
 
 .header-price__title {
@@ -267,6 +276,8 @@ button {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    flex: 1 1 33.333%;
+
 }
 
 .door__header-complect>span {
@@ -277,10 +288,11 @@ button {
 }
 
 .door__header-basket {
-    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    flex: 1 1 33.333%;
+
 }
 
 .header-basket-status {
@@ -291,6 +303,11 @@ button {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.header-basket-combo {
+    animation: myAnim 1s ease 0s infinite normal forwards;
+    text-align: center;
 }
 
 .header-basket__btn {}
@@ -411,5 +428,19 @@ button {
         border: none;
     }
 
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 </style>

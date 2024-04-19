@@ -5,7 +5,7 @@
                 <h3>Корзина</h3>
             </div>
             <div v-if="response" class="alert alert-success">
-{{response}}
+                {{response}}
             </div>
             <ul v-if="doors.length" class="basket__list">
                 <li v-for="door in doors">
@@ -30,6 +30,9 @@
                             <li><b>Звукоизоляция:</b> <em>{{door.soung == 1 ? `Есть 600 руб.` : 'Без звукоизоляции'}}</em>
                             </li>
                             <li><b>Скидка:</b> <em>{{door.discount ? door.discount + "%" : "Нет" }}</em>
+                            </li>
+                            <li v-if="door.isCombo" class="alert alert-info p-3">
+                                Вы выбрали комбинацию из спец. дверей
                             </li>
                         </ul>
                     </div>
